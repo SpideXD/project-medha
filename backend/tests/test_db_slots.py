@@ -26,6 +26,7 @@ from backend.db.session import (  # noqa: E402
     ReleaseDatabaseBeforeSending,
     SlotStats,
     get_db,
+    in_db_thread,
     outside_call,
     own_slot,
 )
@@ -64,7 +65,7 @@ def _build_app(factory: sessionmaker, dependency) -> FastAPI:
         db.execute(text("SELECT 1")).scalar_one()
         async with outside_call():
             await asyncio.sleep(0.5)
-        return {"value": db.execute(text("SELECT 2")).scalar_one()}
+        return {"value": await in_db_thread(lambda: db.execute(text("SELECT 2")).scalar_one())}
 
     return app
 
@@ -161,6 +162,9 @@ class OutsideCallTests(_DeadlockTestCase):
                 self.assertEqual(self.factory.kw["bind"].pool.checkedout(), 0)
                 async with outside_call():  # nested: already released, nothing to do
                     self.assertEqual(SlotStats.in_use, 0)
+            self.assertEqual(SlotStats.in_use, 0, "not retaken until something needs the database")
+            value = await in_db_thread(lambda: db.execute(text("SELECT 2")).scalar_one())
+            self.assertEqual(value, 2)
             self.assertEqual(SlotStats.in_use, 1)
             await dependency.aclose()
             self.assertEqual(SlotStats.in_use, 0)
@@ -216,13 +220,15 @@ class OutsideCallTests(_DeadlockTestCase):
 
         asyncio.run(scenario())
 
-    def test_failure_retakes_the_slot_so_the_caller_can_record_it(self):
+    def test_a_failed_call_can_still_record_it_in_the_database(self):
         async def scenario():
             dependency = get_db()
-            await dependency.__anext__()
+            db = await dependency.__anext__()
             with self.assertRaises(ValueError):
                 async with outside_call():
                     raise ValueError("provider failed")
+            self.assertEqual(SlotStats.in_use, 0)
+            self.assertEqual(await in_db_thread(lambda: db.execute(text("SELECT 1")).scalar_one()), 1)
             self.assertEqual(SlotStats.in_use, 1)
             await dependency.aclose()
             self.assertEqual(SlotStats.in_use, 0)
@@ -288,6 +294,32 @@ class SlotSafetyTests(_DeadlockTestCase):
                 self.assertEqual(db_session.slot_limit(), 4)
             with mock.patch.object(db_session.settings, "db_slots", 0):
                 self.assertEqual(db_session.slot_limit(), 13)
+
+    def test_each_request_closes_its_session_once(self):
+        closes = []
+        real = self.factory
+
+        def counting():
+            db = real()
+            original = db.close
+            db.close = lambda: (closes.append(1), original())[1]
+            return db
+
+        async def scenario():
+            with mock.patch.object(db_session, "SessionLocal", counting):
+                async def inner(scope, receive, send):
+                    dependency = get_db()
+                    await dependency.__anext__()
+                    await send({"type": "http.response.start", "status": 200, "headers": []})
+                    await dependency.aclose()
+
+                async def send(_message):
+                    pass
+
+                await ReleaseDatabaseBeforeSending(inner)({"type": "http"}, None, send)
+
+        asyncio.run(scenario())
+        self.assertEqual(len(closes), 1)
 
 
 class ReleaseBeforeSendingTests(_DeadlockTestCase):
@@ -360,35 +392,302 @@ class OutsideCallFailureTests(_DeadlockTestCase):
         asyncio.run(scenario())
 
     def test_a_dead_connection_before_the_call_does_not_stop_the_call(self):
+        from sqlalchemy import Column, Integer
         from sqlalchemy.exc import OperationalError
+        from sqlalchemy.orm import declarative_base
+
+        model = type("D", (declarative_base(),), {"__tablename__": "dead_conn", "a": Column(Integer, primary_key=True)})
 
         async def scenario():
             dependency = get_db()
             db = await dependency.__anext__()
+            db.execute(text("CREATE TABLE IF NOT EXISTS dead_conn (a INTEGER PRIMARY KEY)"))
+            db.execute(text("INSERT OR IGNORE INTO dead_conn (a) VALUES (7)"))
+            db.commit()
+            row = db.get(model, 7)
             ran = False
             with mock.patch.object(db, "commit", side_effect=OperationalError("x", {}, Exception("gone"))):
                 async with outside_call():
                     ran = True
                     self.assertEqual(SlotStats.in_use, 0)
             self.assertTrue(ran)
-            self.assertEqual(db.execute(text("SELECT 1")).scalar_one(), 1, "the next query reconnects")
+            self.assertIn(row, db, "what the caller holds must stay usable")
+            self.assertEqual(await in_db_thread(lambda: row.a), 7, "and it reloads over a fresh connection")
             await dependency.aclose()
 
         asyncio.run(scenario())
 
-    def test_no_slot_after_the_call_answers_busy_instead_of_hanging(self):
+    def _with_every_slot_taken_during_the_call(self, after_call):
+        async def scenario():
+            dependency = get_db()
+            db = await dependency.__anext__()
+            with mock.patch.object(db_session.settings, "db_slot_wait_seconds", 0.05):
+                async with outside_call():
+                    for _ in range(POOL_SIZE):
+                        await db_session._take_slot(None)
+                try:
+                    return await after_call(db)
+                finally:
+                    for _ in range(POOL_SIZE):
+                        db_session._return_slot()
+                    await dependency.aclose()
+                    self.assertEqual(SlotStats.in_use, 0)
+
+        return asyncio.run(scenario())
+
+    def test_a_finished_result_does_not_need_a_slot(self):
+        async def finish(_db):
+            return "the paid answer"
+
+        self.assertEqual(self._with_every_slot_taken_during_the_call(finish), "the paid answer")
+
+    def test_using_the_database_with_no_slot_free_answers_busy_and_runs_nothing(self):
+        ran = []
+
+        async def save(db):
+            with self.assertRaises(DatabaseBusy) as caught:
+                await in_db_thread(ran.append, 1)
+            return caught.exception.status_code
+
+        self.assertEqual(self._with_every_slot_taken_during_the_call(save), 503)
+        self.assertEqual(ran, [], "must not touch the database without a slot")
+
+
+class RealClientsGiveBackTheSlotTests(_DeadlockTestCase):
+    """Each real client must release the slot around its outside call, with only the
+    provider's SDK or HTTP call replaced. A fake client would prove nothing here."""
+
+    def _slots_during(self, call) -> list[int]:
+        seen: list[int] = []
+
         async def scenario():
             dependency = get_db()
             await dependency.__anext__()
-            with mock.patch.object(db_session.settings, "db_slot_wait_seconds", 0.05):
-                with self.assertRaises(DatabaseBusy) as caught:
+            self.assertEqual(SlotStats.in_use, 1)
+            await call(seen)
+            await dependency.aclose()
+            self.assertEqual(SlotStats.in_use, 0)
+
+        asyncio.run(scenario())
+        self.assertTrue(seen, "the provider was never called")
+        return seen
+
+    def test_gemini_complete(self):
+        from backend.llm.gemini import GeminiClient
+
+        async def call(seen):
+            async def generate_content(**_):
+                seen.append(SlotStats.in_use)
+                return mock.Mock(usage_metadata=None, text="hi")
+
+            client = GeminiClient(api_key="x", model="m")
+            client._client = mock.Mock()
+            client._client.aio.models.generate_content = generate_content
+            self.assertEqual((await client.complete(system="s", messages=[])).text, "hi")
+
+        self.assertEqual(self._slots_during(call), [0])
+
+    def test_gemini_stream(self):
+        from backend.llm.gemini import GeminiClient
+
+        async def call(seen):
+            async def chunks():
+                seen.append(SlotStats.in_use)
+                yield mock.Mock(text="hi", usage_metadata=None)
+
+            async def generate_content_stream(**_):
+                seen.append(SlotStats.in_use)
+                return chunks()
+
+            client = GeminiClient(api_key="x", model="m")
+            client._client = mock.Mock()
+            client._client.aio.models.generate_content_stream = generate_content_stream
+            events = [event async for event in client.stream(system="s", messages=[])]
+            self.assertEqual(events[0].text, "hi")
+
+        self.assertEqual(self._slots_during(call), [0, 0])
+
+    def test_claude_complete(self):
+        from backend.llm.claude import ClaudeClient
+
+        async def call(seen):
+            async def create(**_):
+                seen.append(SlotStats.in_use)
+                return mock.Mock(content=[], usage=mock.Mock(input_tokens=1, output_tokens=1))
+
+            client = ClaudeClient(api_key="x", model="m")
+            client._client = mock.Mock()
+            client._client.messages.create = create
+            await client.complete(system="s", messages=[])
+
+        self.assertEqual(self._slots_during(call), [0])
+
+    def test_claude_stream(self):
+        from backend.llm.claude import ClaudeClient
+
+        async def call(seen):
+            class Stream:
+                async def __aenter__(self):
+                    seen.append(SlotStats.in_use)
+                    return self
+
+                async def __aexit__(self, *_):
+                    return False
+
+                async def __aiter__(self):
+                    yield mock.Mock(type="text", text="hi")
+
+                async def get_final_message(self):
+                    return mock.Mock(usage=mock.Mock(input_tokens=1, output_tokens=1))
+
+            client = ClaudeClient(api_key="x", model="m")
+            client._client = mock.Mock()
+            client._client.messages.stream = lambda **_: Stream()
+            events = [event async for event in client.stream(system="s", messages=[])]
+            self.assertEqual(events[0].text, "hi")
+
+        self.assertEqual(self._slots_during(call), [0])
+
+    def test_voyage_embeddings(self):
+        from backend.retrieval.embedder import VoyageEmbedder
+
+        async def call(seen):
+            async def embed(*_a, **_k):
+                seen.append(SlotStats.in_use)
+                return mock.Mock(embeddings=[[0.1]])
+
+            client = VoyageEmbedder(api_key="x", model="m", dim=1)
+            client._client = mock.Mock(embed=embed)
+            self.assertEqual(await client.embed(["q"], input_type="query"), [[0.1]])
+
+        self.assertEqual(self._slots_during(call), [0])
+
+    def _sarvam(self, seen, payload):
+        class Http:
+            def __init__(self, **_):
+                pass
+
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, *_):
+                return False
+
+            async def post(self, *_a, **_k):
+                seen.append(SlotStats.in_use)
+                return mock.Mock(status_code=200, json=lambda: payload, text="")
+
+        return mock.patch("backend.speech.client.httpx.AsyncClient", Http)
+
+    def test_sarvam_speech_to_text(self):
+        from backend.speech import client as speech
+
+        async def call(seen):
+            with self._sarvam(seen, {"transcript": "namaste", "language_code": "hi-IN"}), \
+                    mock.patch.object(speech.settings, "sarvam_api_key", "x"):
+                await speech.transcribe(b"x" * 600, filename="a.wav", content_type="audio/wav")
+
+        self.assertEqual(self._slots_during(call), [0])
+
+    def test_sarvam_text_to_speech(self):
+        from backend.speech import client as speech
+
+        async def call(seen):
+            with self._sarvam(seen, {"audios": ["AAAA"]}), mock.patch.object(speech.settings, "sarvam_api_key", "x"):
+                await speech.synthesize("namaste", language="hi")
+
+        self.assertEqual(self._slots_during(call), [0])
+
+
+class CancellationTests(_DeadlockTestCase):
+    def test_cancelled_while_holding_a_slot_returns_it(self):
+        async def scenario():
+            started = asyncio.Event()
+
+            async def request():
+                dependency = get_db()
+                await dependency.__anext__()
+                try:
+                    started.set()
+                    await asyncio.sleep(60)
+                finally:
+                    await dependency.aclose()
+
+            task = asyncio.create_task(request())
+            await started.wait()
+            self.assertEqual(SlotStats.in_use, 1)
+            task.cancel()
+            with self.assertRaises(asyncio.CancelledError):
+                await task
+            self.assertEqual(SlotStats.in_use, 0)
+            self.assertEqual(SlotStats.waiting, 0)
+
+        asyncio.run(scenario())
+
+    def test_cancelled_while_waiting_to_retake_a_slot_leaves_nothing_taken(self):
+        async def scenario():
+            waiting = asyncio.Event()
+
+            async def request():
+                dependency = get_db()
+                await dependency.__anext__()
+                try:
                     async with outside_call():
-                        taken = [asyncio.create_task(db_session._take_slot(None)) for _ in range(POOL_SIZE)]
-                        await asyncio.gather(*taken)
-            self.assertEqual(caught.exception.status_code, 503)
+                        for _ in range(POOL_SIZE):
+                            await db_session._take_slot(None)
+                    waiting.set()
+                    await in_db_thread(lambda: None)
+                finally:
+                    await dependency.aclose()
+
+            task = asyncio.create_task(request())
+            await waiting.wait()
+            await asyncio.sleep(0.01)
+            self.assertEqual(SlotStats.waiting, 1)
+            task.cancel()
+            with self.assertRaises(asyncio.CancelledError):
+                await task
+            self.assertEqual(SlotStats.waiting, 0)
+            self.assertEqual(SlotStats.in_use, POOL_SIZE, "only the slots this test took itself")
             for _ in range(POOL_SIZE):
                 db_session._return_slot()
-            await dependency.aclose()
+
+        asyncio.run(scenario())
+
+    def test_client_disconnecting_from_a_real_stream_returns_the_slot(self):
+        app = FastAPI()
+        streaming = asyncio.Event()
+
+        @app.get("/stream")
+        async def stream(db: Session = Depends(get_db)):
+            async def events():
+                await in_db_thread(lambda: db.execute(text("SELECT 1")).scalar_one())
+                yield {"event": "token", "data": "1"}
+                streaming.set()
+                await asyncio.sleep(60)
+                yield {"event": "done", "data": "{}"}
+
+            return EventSourceResponse(events())
+
+        scope = {"type": "http", "asgi": {"version": "3.0"}, "http_version": "1.1", "method": "GET", "path": "/stream",
+                 "raw_path": b"/stream", "query_string": b"", "headers": [], "scheme": "http",
+                 "server": ("test", 80), "client": ("test", 1), "root_path": ""}
+
+        async def scenario():
+            asked = False
+
+            async def receive():
+                nonlocal asked
+                if not asked:
+                    asked = True
+                    return {"type": "http.request", "body": b"", "more_body": False}
+                await streaming.wait()
+                return {"type": "http.disconnect"}
+
+            async def send(_message):
+                pass
+
+            await asyncio.wait_for(ReleaseDatabaseBeforeSending(app)(scope, receive, send), 5)
             self.assertEqual(SlotStats.in_use, 0)
 
         asyncio.run(scenario())
