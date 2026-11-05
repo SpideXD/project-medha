@@ -239,6 +239,15 @@ def build_after_fix() -> list[dict]:
     return _on_far_boxes("fixed", ("small", "default"), ("school", "evening", "morning"))
 
 
+def build_after_review() -> list[dict]:
+    """The same tests with the code review's fixes in. Each 2 vCPU morning run so far has
+    told a different story, so this repeats that one twice."""
+    plan = _on_far_boxes("reviewed", ("default",), ("morning", "school"))
+    plan += _on_far_boxes("reviewed", ("small",), ("evening", "morning"))
+    plan += _on_far_boxes("reviewed2", ("small",), ("morning",))
+    return plan
+
+
 def build_capacity() -> list[dict]:
     """Push each server size until it breaks, on a database with far more data."""
     plan = []
@@ -264,6 +273,7 @@ if __name__ == "__main__":
     Path(__file__).with_name("throughput.json").write_text(json.dumps(build_throughput(), indent=1))
     Path(__file__).with_name("before-fix.json").write_text(json.dumps(build_before_fix(), indent=1))
     Path(__file__).with_name("after-fix.json").write_text(json.dumps(build_after_fix(), indent=1))
+    Path(__file__).with_name("after-review.json").write_text(json.dumps(build_after_review(), indent=1))
     out = Path(__file__).with_name("full.json")
     tests = build()
     out.write_text(json.dumps(tests, indent=1))
