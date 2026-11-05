@@ -21,11 +21,17 @@ import contextvars
 import logging
 import os
 import resource
+import sys
 import threading
 import time
+import traceback
+from collections import Counter
 from collections.abc import Callable
 
 logger = logging.getLogger("backend.metrics")
+
+_STALL_NOTE_SECONDS = 1.0
+_STALL_NOTE_GAP_SECONDS = 5.0
 
 # Longest prefix wins, so "/report-card/omr" beats "/report-card".
 _FEATURE_PREFIXES: dict[str, str] = {
@@ -303,7 +309,35 @@ class _Sampler:
     def __init__(self, metrics: _Metrics, engine) -> None:
         self.metrics = metrics
         self.engine = engine
-        self.last_beat = time.monotonic()
+        # None until the heartbeat has started, on the first request. A worker waiting
+        # for its first request is idle, not stalled.
+        self.last_beat: float | None = None
+        self.loop_thread: int | None = None
+        self.last_stall_note = 0.0
+
+    def note_stall(self, stalled: float) -> None:
+        """Write down what the event loop is doing while it is stuck, because everything
+        in this process waits meanwhile. Only if MEDHA_STALL_LOG names a file."""
+        path = os.environ.get("MEDHA_STALL_LOG")
+        now = time.monotonic()
+        if not path or self.loop_thread is None or stalled < _STALL_NOTE_SECONDS:
+            return
+        if now - self.last_stall_note < _STALL_NOTE_GAP_SECONDS:
+            return
+        self.last_stall_note = now
+        frames = sys._current_frames()
+        lines = [f"--- pid {os.getpid()} at {time.time():.0f}, loop stuck for {stalled:.1f}s"]
+        if self.loop_thread in frames:
+            lines += [entry.rstrip() for entry in traceback.format_stack(frames[self.loop_thread])[-12:]]
+        # Other threads too: a loop waiting for the GIL looks innocent on its own.
+        others = Counter(
+            f"{os.path.basename(frame.f_code.co_filename)}:{frame.f_lineno} {frame.f_code.co_name}"
+            for thread, frame in frames.items()
+            if thread not in (self.loop_thread, threading.get_ident())
+        )
+        lines += [f"{count} thread(s) at {where}" for where, count in others.most_common(6)]
+        with open(path, "a", encoding="utf-8") as handle:
+            handle.write("\n".join(lines) + "\n")
 
     def start_thread(self) -> None:
         threading.Thread(target=self._sample_forever, name="medha-metrics", daemon=True).start()
@@ -323,7 +357,9 @@ class _Sampler:
                 self.metrics.slots_waiting.set(SlotStats.waiting)
                 self.metrics.slots_rejected.inc(SlotStats.rejected - rejected_seen)
                 rejected_seen = SlotStats.rejected
-                self.metrics.loop_stalled.set(time.monotonic() - self.last_beat)
+                stalled = time.monotonic() - self.last_beat if self.last_beat is not None else 0.0
+                self.metrics.loop_stalled.set(stalled)
+                self.note_stall(stalled)
                 self.metrics.worker_cpu.set(time.process_time())
                 # ru_maxrss is KB on Linux and bytes on macOS; only Linux is deployed to.
                 self.metrics.worker_rss.set(
@@ -336,6 +372,8 @@ class _Sampler:
     async def heartbeat(self) -> None:
         import anyio.to_thread
 
+        self.loop_thread = threading.get_ident()
+        self.last_beat = time.monotonic()
         interval = 0.25
         while True:
             scheduled = time.monotonic() + interval

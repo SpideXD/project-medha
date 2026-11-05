@@ -136,6 +136,17 @@ async def get_db() -> AsyncGenerator[Session, None]:
                 _return_slot()
 
 
+def _end_read_transaction(db: Session) -> None:
+    """Returns the connection. Objects stay loaded: expiring them would make the caller
+    re-read everything it holds afterwards."""
+    expire_on_commit = db.expire_on_commit
+    db.expire_on_commit = False
+    try:
+        db.commit()
+    finally:
+        db.expire_on_commit = expire_on_commit
+
+
 @asynccontextmanager
 async def outside_call() -> AsyncIterator[None]:
     """Wrap a slow call to another service. The connection and slot go back for its
@@ -150,14 +161,7 @@ async def outside_call() -> AsyncIterator[None]:
         yield
         return
 
-    # Ends the read transaction, which returns the connection. Objects stay loaded:
-    # expiring them would make the caller re-read everything it holds afterwards.
-    expire_on_commit = slot.db.expire_on_commit
-    slot.db.expire_on_commit = False
-    try:
-        slot.db.commit()
-    finally:
-        slot.db.expire_on_commit = expire_on_commit
+    await anyio.to_thread.run_sync(_end_read_transaction, slot.db)
     slot.held = False
     _return_slot()
     try:

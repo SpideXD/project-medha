@@ -9,6 +9,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import threading
 import unittest
 
 SRC = os.path.abspath(os.path.join(os.path.dirname(__file__), "../src"))
@@ -16,7 +17,44 @@ sys.path.insert(0, SRC)
 
 os.environ.setdefault("JWT_SECRET_KEY", "x" * 40)
 
-from backend.core.metrics import feature_for  # noqa: E402
+from unittest import mock  # noqa: E402
+
+from backend.core.metrics import _Sampler, feature_for  # noqa: E402
+
+
+class StallNoteTests(unittest.TestCase):
+    def _sampler(self) -> _Sampler:
+        sampler = _Sampler(mock.Mock(), mock.Mock())
+        sampler.loop_thread = threading.get_ident()
+        return sampler
+
+    def test_records_where_the_loop_is_stuck(self):
+        with tempfile.NamedTemporaryFile("r", suffix=".log") as log:
+            with mock.patch.dict(os.environ, {"MEDHA_STALL_LOG": log.name}):
+                self._sampler().note_stall(2.5)
+            written = log.read()
+        self.assertIn("loop stuck for 2.5s", written)
+        self.assertIn("test_records_where_the_loop_is_stuck", written)
+
+    def test_writes_nothing_for_a_short_stall_or_without_a_file(self):
+        with tempfile.NamedTemporaryFile("r", suffix=".log") as log:
+            with mock.patch.dict(os.environ, {"MEDHA_STALL_LOG": log.name}):
+                self._sampler().note_stall(0.5)
+            self.assertEqual(log.read(), "")
+        with mock.patch.dict(os.environ):
+            os.environ.pop("MEDHA_STALL_LOG", None)
+            self._sampler().note_stall(5.0)  # must not raise
+
+    def test_a_worker_with_no_requests_yet_is_not_stalled(self):
+        self.assertIsNone(_Sampler(mock.Mock(), mock.Mock()).last_beat)
+
+    def test_notes_are_spaced_out(self):
+        with tempfile.NamedTemporaryFile("r", suffix=".log") as log:
+            with mock.patch.dict(os.environ, {"MEDHA_STALL_LOG": log.name}):
+                sampler = self._sampler()
+                sampler.note_stall(2.0)
+                sampler.note_stall(3.0)
+            self.assertEqual(log.read().count("--- pid"), 1)
 
 _REAL_APP_SCRIPT = """
 import time
