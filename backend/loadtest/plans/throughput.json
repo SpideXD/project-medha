@@ -1,0 +1,146 @@
+[
+ {
+  "name": "throughput-polling-small2-2w",
+  "config": "small2:2",
+  "restore": false,
+  "max_seconds": 960,
+  "env": {
+   "LT_SCENARIO": "polling",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "40",
+   "LT_MAX_USERS": "450",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "throughput-polling-default2-4w",
+  "config": "default2:4",
+  "restore": false,
+  "max_seconds": 960,
+  "env": {
+   "LT_SCENARIO": "polling",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "40",
+   "LT_MAX_USERS": "450",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "throughput-student_records-small2-2w",
+  "config": "small2:2",
+  "restore": false,
+  "max_seconds": 960,
+  "env": {
+   "LT_SCENARIO": "student_records",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "40",
+   "LT_MAX_USERS": "450",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "throughput-student_records-default2-4w",
+  "config": "default2:4",
+  "restore": false,
+  "max_seconds": 960,
+  "env": {
+   "LT_SCENARIO": "student_records",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "40",
+   "LT_MAX_USERS": "450",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "throughput-history-small2-2w",
+  "config": "small2:2",
+  "restore": false,
+  "max_seconds": 960,
+  "env": {
+   "LT_SCENARIO": "history",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "40",
+   "LT_MAX_USERS": "450",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "throughput-history-default2-4w",
+  "config": "default2:4",
+  "restore": false,
+  "max_seconds": 960,
+  "env": {
+   "LT_SCENARIO": "history",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "40",
+   "LT_MAX_USERS": "450",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "throughput-attendance-small2-2w",
+  "config": "small2:2",
+  "restore": false,
+  "max_seconds": 960,
+  "env": {
+   "LT_SCENARIO": "attendance",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "40",
+   "LT_MAX_USERS": "450",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "throughput-attendance-default2-4w",
+  "config": "default2:4",
+  "restore": false,
+  "max_seconds": 960,
+  "env": {
+   "LT_SCENARIO": "attendance",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "40",
+   "LT_MAX_USERS": "450",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ }
+]

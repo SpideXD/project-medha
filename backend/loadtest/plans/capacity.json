@@ -1,0 +1,98 @@
+[
+ {
+  "name": "indexed-school-small-2w",
+  "config": "small2:2",
+  "max_seconds": 2100,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "40",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false
+ },
+ {
+  "name": "indexed-school-default-4w",
+  "config": "default:4",
+  "max_seconds": 2550,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "50",
+   "LT_MAX_SCHOOLS": "800",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false
+ },
+ {
+  "name": "indexed-evening-small-2w",
+  "config": "small2:2",
+  "max_seconds": 2100,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "evening",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "30",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "250",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false
+ },
+ {
+  "name": "indexed-evening-default-4w",
+  "config": "default:4",
+  "max_seconds": 2550,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "evening",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "50",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "400",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false
+ },
+ {
+  "name": "indexed-morning-small-2w",
+  "config": "small2:2",
+  "max_seconds": 2100,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "40",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false
+ },
+ {
+  "name": "indexed-morning-default-4w",
+  "config": "default:4",
+  "max_seconds": 2550,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "50",
+   "LT_MAX_SCHOOLS": "800",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false
+ }
+]

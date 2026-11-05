@@ -118,9 +118,152 @@ def build_comparison() -> list[dict]:
     return plan
 
 
+# Where each part of the day starts and how fast it climbs, in schools. The ceilings are
+# far above the expected limits, because each run is meant to end by breaking the server.
+CAPACITY_LEVELS = {
+    "school": {"small": (60, 20, 500), "default": (100, 25, 800)},
+    "morning": {"small": (60, 20, 500), "default": (100, 25, 800)},
+    "evening": {"small": (30, 10, 250), "default": (50, 15, 400)},
+}
+CAPACITY_WORKERS = {"small": 2, "default": 4}
+# Repeat, phase, and which machine of that size. Most valuable first, and alternating
+# machines, so a sweep cut short still has each answer on both.
+CAPACITY_ORDER = (
+    (1, "school", ""), (1, "evening", ""), (1, "morning", ""),
+    (2, "school", "2"), (2, "evening", "2"), (2, "morning", "2"),
+    (3, "school", ""),
+)
+
+
+# Rough limits: wider steps and shorter levels, one run each, no restore between runs.
+ROUGH_LEVELS = {
+    "school": {"small": (60, 40, 500), "default": (100, 50, 800)},
+    "evening": {"small": (30, 20, 250), "default": (50, 25, 400)},
+    "morning": {"small": (60, 40, 500), "default": (100, 50, 800)},
+}
+
+
+def build_rough_capacity() -> list[dict]:
+    plan = []
+    for phase, sizes in ROUGH_LEVELS.items():
+        for size, (start, step, maximum) in sizes.items():
+            workers = CAPACITY_WORKERS[size]
+            # The first small box had no network route to the monitoring box, so use the second.
+            machine = "small2" if size == "small" else size
+            test = _day(phase, f"{machine}:{workers}", start=start, step=step, maximum=maximum, seconds=150)
+            test["name"] = f"indexed-{phase}-{size}-{workers}w"  # after migration 0041
+            test["env"]["LT_PROFILE"] = "full"
+            test["restore"] = False
+            plan.append(test)
+    return plan
+
+
+# More workers than vCPUs, on the same machines as the rough runs. Servers fail with spare
+# CPU while their event loops lag, so if blocking on I/O is what limits them, more loops
+# should use that CPU. School hours has fewer extra workers: its workers peak over 1 GB.
+WORKER_TESTS = (("evening", "small", 4), ("morning", "default", 8), ("school", "small", 3), ("school", "default", 6))
+
+
+def build_worker_test() -> list[dict]:
+    plan = []
+    for phase, size, workers in WORKER_TESTS:
+        start, step, maximum = ROUGH_LEVELS[phase][size]
+        machine = "small2" if size == "small" else size
+        test = _day(phase, f"{machine}:{workers}", start=start, step=step, maximum=maximum, seconds=150)
+        test["name"] = f"workers-{phase}-{size}-{workers}w"
+        test["env"]["LT_PROFILE"] = "full"
+        test["restore"] = False
+        plan.append(test)
+    return plan
+
+
+def build_worker_retest() -> list[dict]:
+    """The first 8 worker run lost nearly half its CPU to the host, so repeat it on the other
+    4 vCPU machine, with 4 workers beside it for a fair comparison on that machine."""
+    plan = []
+    for workers in (4, 8):
+        start, step, maximum = ROUGH_LEVELS["morning"]["default"]
+        test = _day("morning", f"default2:{workers}", start=start, step=step, maximum=maximum, seconds=150)
+        test["name"] = f"retest-morning-default2-{workers}w"
+        test["env"]["LT_PROFILE"] = "full"
+        test["restore"] = False
+        plan.append(test)
+    return plan
+
+
+def build_throughput() -> list[dict]:
+    """The most a server can do, with no simulated schools: users repeat one action with no
+    pause at all, in rising numbers, until throughput stops growing. AI features are left out,
+    because their per-person limits would cap them, and the fake AI's speed would be measured."""
+    plan = []
+    for feature in ("polling", "student_records", "history", "attendance"):
+        for machine, workers in (("small2", 2), ("default2", 4)):
+            test = {
+                "name": f"throughput-{feature}-{machine}-{workers}w",
+                "config": f"{machine}:{workers}",
+                "restore": False,
+                "max_seconds": 12 * 60 + 240,
+                "env": {
+                    "LT_SCENARIO": feature, "LT_PROFILE": "full", "LT_SHAPE": "steps", "LT_THINK_MIN": "0",
+                    "LT_THINK_MAX": "0", "LT_USERS": "10", "LT_USERS_STEP": "40", "LT_MAX_USERS": "450",
+                    "LT_STEP_SECONDS": "60", "LT_P95_LIMIT_MS": "1500",
+                },
+            }
+            plan.append(test)
+    return plan
+
+
+def _on_far_boxes(prefix: str, sizes: tuple[str, ...], phases: tuple[str, ...]) -> list[dict]:
+    """On the two boxes about 1.8 ms from the database. The first 4 vCPU box is 0.3 ms away,
+    which let it handle 2.5 times the users of an identical box, so it flatters the code."""
+    plan = []
+    for phase in phases:
+        for size in sizes:
+            start, step, maximum = ROUGH_LEVELS[phase][size]
+            workers = CAPACITY_WORKERS[size]
+            machine = {"small": "small2", "default": "default2"}[size]
+            test = _day(phase, f"{machine}:{workers}", start=start, step=step, maximum=maximum, seconds=150)
+            test["name"] = f"{prefix}-{phase}-{size}-{workers}w"
+            test["env"]["LT_PROFILE"] = "full"
+            test["restore"] = False
+            plan.append(test)
+    return plan
+
+
+def build_before_fix() -> list[dict]:
+    """The tests the 4 vCPU far box has not done yet, to compare the event loop fix with."""
+    return _on_far_boxes("before", ("default",), ("school", "evening"))
+
+
+def build_after_fix() -> list[dict]:
+    return _on_far_boxes("fixed", ("small", "default"), ("school", "evening", "morning"))
+
+
+def build_capacity() -> list[dict]:
+    """Push each server size until it breaks, on a database with far more data."""
+    plan = []
+    for repeat, phase, machine in CAPACITY_ORDER:
+        for size in ("small", "default"):
+            start, step, maximum = CAPACITY_LEVELS[phase][size]
+            workers = CAPACITY_WORKERS[size]
+            test = _day(phase, f"{size}{machine}:{workers}", start=start, step=step, maximum=maximum, seconds=180)
+            test["name"] = f"cap{repeat}-{phase}-{size}-{workers}w"
+            # All features unlocked, so attendance saves, OMR and exports are part of the load.
+            test["env"]["LT_PROFILE"] = "full"
+            plan.append(test)
+    return plan
+
+
 if __name__ == "__main__":
     comparison = Path(__file__).with_name("comparison.json")
     comparison.write_text(json.dumps(build_comparison(), indent=1))
+    Path(__file__).with_name("capacity.json").write_text(json.dumps(build_rough_capacity(), indent=1))
+    Path(__file__).with_name("capacity-full.json").write_text(json.dumps(build_capacity(), indent=1))
+    Path(__file__).with_name("workers.json").write_text(json.dumps(build_worker_test(), indent=1))
+    Path(__file__).with_name("worker-retest.json").write_text(json.dumps(build_worker_retest(), indent=1))
+    Path(__file__).with_name("throughput.json").write_text(json.dumps(build_throughput(), indent=1))
+    Path(__file__).with_name("before-fix.json").write_text(json.dumps(build_before_fix(), indent=1))
+    Path(__file__).with_name("after-fix.json").write_text(json.dumps(build_after_fix(), indent=1))
     out = Path(__file__).with_name("full.json")
     tests = build()
     out.write_text(json.dumps(tests, indent=1))

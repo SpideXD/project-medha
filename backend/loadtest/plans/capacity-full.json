@@ -1,0 +1,212 @@
+[
+ {
+  "name": "cap1-school-small-2w",
+  "config": "small:2",
+  "max_seconds": 4440,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap1-school-default-4w",
+  "config": "default:4",
+  "max_seconds": 5520,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "800",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap1-evening-small-2w",
+  "config": "small:2",
+  "max_seconds": 4440,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "evening",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "30",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "250",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap1-evening-default-4w",
+  "config": "default:4",
+  "max_seconds": 4620,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "evening",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "50",
+   "LT_SCHOOLS_STEP": "15",
+   "LT_MAX_SCHOOLS": "400",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap1-morning-small-2w",
+  "config": "small:2",
+  "max_seconds": 4440,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap1-morning-default-4w",
+  "config": "default:4",
+  "max_seconds": 5520,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "800",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap2-school-small-2w",
+  "config": "small2:2",
+  "max_seconds": 4440,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap2-school-default-4w",
+  "config": "default2:4",
+  "max_seconds": 5520,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "800",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap2-evening-small-2w",
+  "config": "small2:2",
+  "max_seconds": 4440,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "evening",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "30",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "250",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap2-evening-default-4w",
+  "config": "default2:4",
+  "max_seconds": 4620,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "evening",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "50",
+   "LT_SCHOOLS_STEP": "15",
+   "LT_MAX_SCHOOLS": "400",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap2-morning-small-2w",
+  "config": "small2:2",
+  "max_seconds": 4440,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap2-morning-default-4w",
+  "config": "default2:4",
+  "max_seconds": 5520,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "800",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap3-school-small-2w",
+  "config": "small:2",
+  "max_seconds": 4440,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "cap3-school-default-4w",
+  "config": "default:4",
+  "max_seconds": 5520,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "800",
+   "LT_STEP_SECONDS": "180"
+  }
+ }
+]

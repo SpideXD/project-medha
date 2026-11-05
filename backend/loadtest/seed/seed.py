@@ -21,6 +21,7 @@ import argparse
 import hashlib
 import io
 import json
+import multiprocessing
 import os
 import random
 import sys
@@ -44,6 +45,7 @@ _FIRST_NAMES = ("Aarav", "Priya", "Rohan", "Sneha", "Vikram", "Anjali", "Rahul",
                 "Amit", "Neha", "Suresh", "Kavita", "Manoj", "Ritu", "Deepak", "Sunita")
 _LAST_NAMES = ("Kumar", "Sharma", "Singh", "Yadav", "Prasad", "Mishra", "Jha", "Gupta")
 _FILLER = "प्रकाश संश्लेषण वह प्रक्रिया है जिसमें हरे पौधे अपना भोजन बनाते हैं। "
+_BATCH_SCHOOLS = 10
 
 
 def det_uuid(*parts: object) -> uuid.UUID:
@@ -585,6 +587,34 @@ def _counter(start: int = 1):
     return next_value
 
 
+# Phone numbers per school, far above what one school uses. Numbering by school rather
+# than by a running total keeps them unique when schools are seeded in parallel.
+_PHONES_PER_SCHOOL = 10_000
+_job: dict = {}
+
+
+def _open_job(database_url: str, args, ref: dict, ctx: dict) -> None:
+    connection = create_engine(database_url).raw_connection()
+    with connection.cursor() as cursor:
+        # Setup only: durability is pointless for data that is rebuilt if a seed fails.
+        cursor.execute("SET synchronous_commit = off")
+    _job.update(connection=connection, args=args, ref=ref, ctx=ctx)
+
+
+def _seed_batch(indexes: list[int]) -> tuple[list[dict], dict[str, int]]:
+    connection = _job["connection"]
+    writer = Writer(connection)
+    schools = []
+    for index in indexes:
+        first_phone = (index - 1) * _PHONES_PER_SCHOOL + 1
+        ctx = {**_job["ctx"], "next_teacher_phone": _counter(first_phone), "next_student_phone": _counter(first_phone)}
+        schools.append(seed_school(index, _job["args"], writer, _job["ref"], ctx))
+        # COPY runs per table, so parents and children must be flushed together.
+        writer.flush_all()
+        connection.commit()
+    return schools, writer.totals
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--schools", type=int, required=True)
@@ -596,6 +626,7 @@ def main() -> None:
     parser.add_argument("--generations-per-teacher", type=int, default=15)
     parser.add_argument("--notifications-per-person", type=int, default=20)
     parser.add_argument("--out", required=True, help="where to write the manifest JSON")
+    parser.add_argument("--jobs", type=int, default=1, help="schools seeded in parallel")
     parser.add_argument("--analyze", action=argparse.BooleanOptionalAction, default=True)
     args = parser.parse_args()
 
@@ -635,8 +666,6 @@ def main() -> None:
         "block_id": block_id,
         # One hash for everyone: same bcrypt cost as a real account, without a long seed.
         "password_hash": bcrypt.hashpw(PASSWORD.encode(), bcrypt.gensalt()).decode(),
-        "next_teacher_phone": _counter(),
-        "next_student_phone": _counter(),
     }
 
     writer = Writer(connection)
@@ -652,14 +681,25 @@ def main() -> None:
         [(admin_id, None, hashlib.sha256(refresh_token_for(admin_id).encode()).hexdigest(),
           det_uuid("family", admin_id), now, now + timedelta(days=25))],
     )
-    for index in range(1, args.schools + 1):
-        schools.append(seed_school(index, args, writer, ref, ctx))
-        # COPY runs per table, so parents and children must be flushed together.
-        writer.flush_all()
-        connection.commit()
-        if index % 10 == 0 or index == args.schools:
-            print(f"  {index}/{args.schools} schools, {time.time() - started:.0f}s", flush=True)
+    writer.flush_all()
+    connection.commit()  # the schools below refer to these rows
+    # Closed before forking: a child must not inherit a live connection, and this one
+    # would sit idle for hours while the schools are written.
+    connection.close()
+    engine.dispose()
 
+    numbers = list(range(1, args.schools + 1))
+    batches = [numbers[i:i + _BATCH_SCHOOLS] for i in range(0, len(numbers), _BATCH_SCHOOLS)]
+    with multiprocessing.get_context("fork").Pool(
+        args.jobs, initializer=_open_job, initargs=(database_url, args, ref, ctx)
+    ) as pool:
+        for batch_schools, totals in pool.imap(_seed_batch, batches):
+            schools += batch_schools
+            for table, count in totals.items():
+                writer.totals[table] = writer.totals.get(table, 0) + count
+            print(f"  {len(schools)}/{args.schools} schools, {time.time() - started:.0f}s", flush=True)
+
+    connection = engine.raw_connection()
     if args.analyze:
         with connection.cursor() as cursor:
             cursor.execute("ANALYZE")

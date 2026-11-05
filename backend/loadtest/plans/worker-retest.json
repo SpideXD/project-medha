@@ -1,0 +1,34 @@
+[
+ {
+  "name": "retest-morning-default2-4w",
+  "config": "default2:4",
+  "max_seconds": 2550,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "50",
+   "LT_MAX_SCHOOLS": "800",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false
+ },
+ {
+  "name": "retest-morning-default2-8w",
+  "config": "default2:8",
+  "max_seconds": 2550,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "50",
+   "LT_MAX_SCHOOLS": "800",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false
+ }
+]
