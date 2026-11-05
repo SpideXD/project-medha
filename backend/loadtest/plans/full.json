@@ -1,0 +1,1086 @@
+[
+ {
+  "name": "day-school-small-1w",
+  "config": "small:1",
+  "max_seconds": 1500,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "10",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "100",
+   "LT_STEP_SECONDS": "120"
+  }
+ },
+ {
+  "name": "day-school-small-2w",
+  "config": "small:2",
+  "max_seconds": 1500,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "10",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "100",
+   "LT_STEP_SECONDS": "120"
+  }
+ },
+ {
+  "name": "day-school-default-1w",
+  "config": "default:1",
+  "max_seconds": 1500,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "10",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "100",
+   "LT_STEP_SECONDS": "120"
+  }
+ },
+ {
+  "name": "day-school-default-4w",
+  "config": "default:4",
+  "max_seconds": 1500,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "10",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "100",
+   "LT_STEP_SECONDS": "120"
+  }
+ },
+ {
+  "name": "before-day-school-small-1w",
+  "config": "small:1",
+  "max_seconds": 1260,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "5",
+   "LT_SCHOOLS_STEP": "5",
+   "LT_MAX_SCHOOLS": "40",
+   "LT_STEP_SECONDS": "120"
+  },
+  "original": true
+ },
+ {
+  "name": "before-day-school-small-2w",
+  "config": "small:2",
+  "max_seconds": 1260,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "5",
+   "LT_SCHOOLS_STEP": "5",
+   "LT_MAX_SCHOOLS": "40",
+   "LT_STEP_SECONDS": "120"
+  },
+  "original": true
+ },
+ {
+  "name": "before-day-school-default-1w",
+  "config": "default:1",
+  "max_seconds": 1260,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "5",
+   "LT_SCHOOLS_STEP": "5",
+   "LT_MAX_SCHOOLS": "40",
+   "LT_STEP_SECONDS": "120"
+  },
+  "original": true
+ },
+ {
+  "name": "before-day-school-default-4w",
+  "config": "default:4",
+  "max_seconds": 1260,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "5",
+   "LT_SCHOOLS_STEP": "5",
+   "LT_MAX_SCHOOLS": "40",
+   "LT_STEP_SECONDS": "120"
+  },
+  "original": true
+ },
+ {
+  "name": "day-morning-small-2w",
+  "config": "small:2",
+  "max_seconds": 1500,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "10",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "100",
+   "LT_STEP_SECONDS": "120"
+  }
+ },
+ {
+  "name": "day-morning-default-4w",
+  "config": "default:4",
+  "max_seconds": 1500,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "10",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "100",
+   "LT_STEP_SECONDS": "120"
+  }
+ },
+ {
+  "name": "day-evening-small-2w",
+  "config": "small:2",
+  "max_seconds": 1020,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "evening",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "10",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "60",
+   "LT_STEP_SECONDS": "120"
+  }
+ },
+ {
+  "name": "day-evening-default-4w",
+  "config": "default:4",
+  "max_seconds": 1020,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "evening",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "10",
+   "LT_SCHOOLS_STEP": "10",
+   "LT_MAX_SCHOOLS": "60",
+   "LT_STEP_SECONDS": "120"
+  }
+ },
+ {
+  "name": "feature-ask_medha-default-4w",
+  "config": "default:4",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "ask_medha",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-generation-default-4w",
+  "config": "default:4",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "generation",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-attendance-default-4w",
+  "config": "default:4",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "attendance",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "2000"
+  }
+ },
+ {
+  "name": "feature-auth_login-default-4w",
+  "config": "default:4",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "auth_login",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "2",
+   "LT_USERS_STEP": "4",
+   "LT_MAX_USERS": "22",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-auth_refresh-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "auth_refresh",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-work_update-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "work_update",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-tutor-default-4w",
+  "config": "default:4",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "tutor",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-principal_dashboard-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "principal_dashboard",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-omr-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "omr",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "1",
+   "LT_USERS_STEP": "2",
+   "LT_MAX_USERS": "13",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-polling-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "polling",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1000"
+  }
+ },
+ {
+  "name": "feature-history-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "history",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-report_card-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "report_card",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-student_records-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "student_records",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-homework-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "homework",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-exports-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "exports",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-english-default-4w",
+  "config": "default:4",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "english",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-voice-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "voice",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "6000"
+  }
+ },
+ {
+  "name": "feature-announce-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "announce",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-principal_timetable-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "principal_timetable",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-student_content-default-4w",
+  "config": "default:4",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "student_content",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-ask_medha-small-2w",
+  "config": "small:2",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "ask_medha",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-generation-small-2w",
+  "config": "small:2",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "generation",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-attendance-small-2w",
+  "config": "small:2",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "attendance",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "2000"
+  }
+ },
+ {
+  "name": "feature-auth_login-small-2w",
+  "config": "small:2",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "auth_login",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "2",
+   "LT_USERS_STEP": "4",
+   "LT_MAX_USERS": "22",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-auth_refresh-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "auth_refresh",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-work_update-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "work_update",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-tutor-small-2w",
+  "config": "small:2",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "tutor",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-principal_dashboard-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "principal_dashboard",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-omr-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "omr",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "1",
+   "LT_USERS_STEP": "2",
+   "LT_MAX_USERS": "13",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-polling-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "polling",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1000"
+  }
+ },
+ {
+  "name": "feature-history-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "history",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-report_card-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "report_card",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-student_records-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "student_records",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-homework-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "homework",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-exports-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "exports",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-english-small-2w",
+  "config": "small:2",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "english",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-voice-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "voice",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "6000"
+  }
+ },
+ {
+  "name": "feature-announce-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "announce",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-principal_timetable-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "principal_timetable",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-student_content-small-2w",
+  "config": "small:2",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "student_content",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-ask_medha-small-1w",
+  "config": "small:1",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "ask_medha",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-generation-small-1w",
+  "config": "small:1",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "generation",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-attendance-small-1w",
+  "config": "small:1",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "attendance",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "2000"
+  }
+ },
+ {
+  "name": "feature-auth_login-small-1w",
+  "config": "small:1",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "auth_login",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "2",
+   "LT_USERS_STEP": "4",
+   "LT_MAX_USERS": "22",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-auth_refresh-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "auth_refresh",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-work_update-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "work_update",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-tutor-small-1w",
+  "config": "small:1",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "tutor",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-principal_dashboard-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "principal_dashboard",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-omr-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "omr",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "1",
+   "LT_USERS_STEP": "2",
+   "LT_MAX_USERS": "13",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-polling-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "polling",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1000"
+  }
+ },
+ {
+  "name": "feature-history-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "history",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-report_card-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "report_card",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-student_records-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "student_records",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-homework-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "homework",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ },
+ {
+  "name": "feature-exports-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "exports",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-english-small-1w",
+  "config": "small:1",
+  "max_seconds": 600,
+  "env": {
+   "LT_SCENARIO": "english",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "25",
+   "LT_USERS_STEP": "50",
+   "LT_MAX_USERS": "275",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "5000"
+  }
+ },
+ {
+  "name": "feature-voice-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "voice",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "6000"
+  }
+ },
+ {
+  "name": "feature-announce-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "announce",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-principal_timetable-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "principal_timetable",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "5",
+   "LT_USERS_STEP": "10",
+   "LT_MAX_USERS": "65",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "3000"
+  }
+ },
+ {
+  "name": "feature-student_content-small-1w",
+  "config": "small:1",
+  "max_seconds": 660,
+  "env": {
+   "LT_SCENARIO": "student_content",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_USERS": "10",
+   "LT_USERS_STEP": "20",
+   "LT_MAX_USERS": "130",
+   "LT_STEP_SECONDS": "60",
+   "LT_P95_LIMIT_MS": "1500"
+  }
+ }
+]

@@ -1,0 +1,2127 @@
+{
+ "uid": "medha-load",
+ "title": "Medha load test",
+ "tags": [
+  "medha"
+ ],
+ "timezone": "browser",
+ "schemaVersion": 39,
+ "refresh": "5s",
+ "time": {
+  "from": "now-15m",
+  "to": "now"
+ },
+ "timepicker": {
+  "refresh_intervals": [
+   "5s",
+   "10s",
+   "30s",
+   "1m"
+  ]
+ },
+ "panels": [
+  {
+   "id": 2,
+   "type": "row",
+   "title": "Right now",
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 0
+   }
+  },
+  {
+   "id": 3,
+   "type": "stat",
+   "title": "Schools online",
+   "description": "At this run's assumed users per school.",
+   "gridPos": {
+    "h": 4,
+    "w": 4,
+    "x": 0,
+    "y": 1
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "",
+     "values": false
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "locust_schools",
+     "instant": false,
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "type": "stat",
+   "title": "Simulated users",
+   "description": "",
+   "gridPos": {
+    "h": 4,
+    "w": 4,
+    "x": 4,
+    "y": 1
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "",
+     "values": false
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "locust_users",
+     "instant": false,
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "type": "stat",
+   "title": "Requests/s",
+   "description": "",
+   "gridPos": {
+    "h": 4,
+    "w": 4,
+    "x": 8,
+    "y": 1
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "",
+     "values": false
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(rate(medha_http_requests_total[1m]))",
+     "instant": false,
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "type": "stat",
+   "title": "Failing (5xx)",
+   "description": "",
+   "gridPos": {
+    "h": 4,
+    "w": 4,
+    "x": 12,
+    "y": 1
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "orange",
+        "value": 0.005
+       },
+       {
+        "color": "red",
+        "value": 0.02
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "",
+     "values": false
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(rate(medha_http_requests_total{status=~\"5..\"}[1m])) / sum(rate(medha_http_requests_total[1m]))",
+     "instant": false,
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "type": "stat",
+   "title": "DB pool in use",
+   "description": "100% is where the freeze starts. Every other request waits for a connection.",
+   "gridPos": {
+    "h": 4,
+    "w": 4,
+    "x": 16,
+    "y": 1
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "orange",
+        "value": 0.7
+       },
+       {
+        "color": "red",
+        "value": 0.95
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "",
+     "values": false
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(medha_db_pool_checked_out) / sum(medha_db_pool_capacity)",
+     "instant": false,
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "type": "stat",
+   "title": "Event loop blocked",
+   "description": "Seconds since the event loop last ran. While high, every request in that worker waits.",
+   "gridPos": {
+    "h": 4,
+    "w": 4,
+    "x": 20,
+    "y": 1
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "orange",
+        "value": 0.5
+       },
+       {
+        "color": "red",
+        "value": 2
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "",
+     "values": false
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "max(medha_event_loop_stalled_seconds)",
+     "instant": false,
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "type": "row",
+   "title": "Each feature",
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 5
+   }
+  },
+  {
+   "id": 10,
+   "type": "table",
+   "title": "Throughput and speed by feature",
+   "description": "Refreshes live. Errors counts 5xx and 429.",
+   "gridPos": {
+    "h": 11,
+    "w": 24,
+    "x": 0,
+    "y": 6
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "decimals": 2
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "Req/s"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "reqps"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "p50"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "s"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "p95"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "s"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "p99"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "s"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "Errors"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "percentunit"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "DB time per req"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "s"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "In progress"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "short"
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "SQL per req"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "short"
+       }
+      ]
+     }
+    ]
+   },
+   "options": {
+    "showHeader": true,
+    "sortBy": [
+     {
+      "displayName": "Req/s",
+      "desc": true
+     }
+    ]
+   },
+   "transformations": [
+    {
+     "id": "joinByField",
+     "options": {
+      "byField": "feature",
+      "mode": "outer"
+     }
+    },
+    {
+     "id": "organize",
+     "options": {
+      "excludeByName": {
+       "Time": true,
+       "Time 1": true,
+       "Time 2": true,
+       "Time 3": true,
+       "Time 4": true,
+       "Time 5": true,
+       "Time 6": true,
+       "Time 7": true,
+       "Time 8": true,
+       "Time 9": true,
+       "Time 10": true,
+       "Time 11": true
+      },
+      "renameByName": {
+       "Value #A": "Req/s",
+       "Value #B": "p50",
+       "Value #C": "p95",
+       "Value #D": "p99",
+       "Value #E": "Errors",
+       "Value #F": "In progress",
+       "Value #G": "DB time per req",
+       "Value #H": "SQL per req"
+      }
+     }
+    }
+   ],
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (feature) (rate(medha_http_requests_total{feature!=\"unmatched\"}[1m]))",
+     "instant": true,
+     "format": "table"
+    },
+    {
+     "refId": "B",
+     "expr": "histogram_quantile(0.5, sum by (le, feature) (rate(medha_http_request_duration_seconds_bucket[1m])))",
+     "instant": true,
+     "format": "table"
+    },
+    {
+     "refId": "C",
+     "expr": "histogram_quantile(0.95, sum by (le, feature) (rate(medha_http_request_duration_seconds_bucket[1m])))",
+     "instant": true,
+     "format": "table"
+    },
+    {
+     "refId": "D",
+     "expr": "histogram_quantile(0.99, sum by (le, feature) (rate(medha_http_request_duration_seconds_bucket[1m])))",
+     "instant": true,
+     "format": "table"
+    },
+    {
+     "refId": "E",
+     "expr": "sum by (feature) (rate(medha_http_requests_total{{status=~\"5..|429\"}}[1m])) / sum by (feature) (rate(medha_http_requests_total[1m]))",
+     "instant": true,
+     "format": "table"
+    },
+    {
+     "refId": "F",
+     "expr": "sum by (feature) (medha_http_in_progress)",
+     "instant": true,
+     "format": "table"
+    },
+    {
+     "refId": "G",
+     "expr": "sum by (feature) (rate(medha_db_query_seconds_total[1m])) / sum by (feature) (rate(medha_http_requests_total[1m]))",
+     "instant": true,
+     "format": "table"
+    },
+    {
+     "refId": "H",
+     "expr": "sum by (feature) (rate(medha_db_queries_total[1m])) / sum by (feature) (rate(medha_http_requests_total[1m]))",
+     "instant": true,
+     "format": "table"
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "type": "timeseries",
+   "title": "Requests/s by feature",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 17
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "custom": {
+      "fillOpacity": 25,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "normal"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (feature) (rate(medha_http_requests_total{feature!=\"unmatched\"}[1m]))",
+     "legendFormat": "{{feature}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "type": "timeseries",
+   "title": "p95 by feature",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 17
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "histogram_quantile(0.95, sum by (le, feature) (rate(medha_http_request_duration_seconds_bucket[1m])))",
+     "legendFormat": "{{feature}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "type": "timeseries",
+   "title": "Failures/s by feature and status",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 25
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (feature, status) (rate(medha_http_requests_total{status=~\"5..|429\"}[1m]))",
+     "legendFormat": "{{feature}} {{status}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 14,
+   "type": "timeseries",
+   "title": "Slowest routes (p95)",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 25
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(10, histogram_quantile(0.95, sum by (le, route) (rate(medha_http_request_duration_seconds_bucket[1m]))))",
+     "legendFormat": "{{route}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "type": "row",
+   "title": "LLM streaming",
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 33
+   }
+  },
+  {
+   "id": 16,
+   "type": "timeseries",
+   "title": "Open streams",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 0,
+    "y": 34
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (feature) (medha_sse_active)",
+     "legendFormat": "{{feature}}",
+     "interval": "5s"
+    },
+    {
+     "refId": "B",
+     "expr": "mock_llm_active_streams",
+     "legendFormat": "at the fake LLM",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 17,
+   "type": "timeseries",
+   "title": "Time to first event, p95",
+   "description": "Includes the fake LLM's own delay, so watch how far it climbs above that baseline.",
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 8,
+    "y": 34
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "histogram_quantile(0.95, sum by (le, feature) (rate(medha_http_first_byte_seconds_bucket{feature=~\"ask_medha|generation|tutor|english\"}[1m])))",
+     "legendFormat": "{{feature}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 18,
+   "type": "timeseries",
+   "title": "Fake LLM calls/s",
+   "description": "Far fewer calls than generation requests means the cache is doing its job.",
+   "gridPos": {
+    "h": 8,
+    "w": 8,
+    "x": 16,
+    "y": 34
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (shape) (rate(mock_llm_calls_total[1m]))",
+     "legendFormat": "{{shape}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 19,
+   "type": "row",
+   "title": "Why it is slow: the backend",
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 42
+   }
+  },
+  {
+   "id": 20,
+   "type": "timeseries",
+   "title": "Database connections",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 0,
+    "y": 43
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(medha_db_pool_checked_out)",
+     "legendFormat": "in use",
+     "interval": "5s"
+    },
+    {
+     "refId": "B",
+     "expr": "sum(medha_db_pool_capacity)",
+     "legendFormat": "limit",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 21,
+   "type": "timeseries",
+   "title": "Database slots (the deadlock guard)",
+   "description": "Requests queue here, cheaply, instead of blocking threads. A long queue means more capacity would help.",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 6,
+    "y": 43
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(medha_db_slots_in_use)",
+     "legendFormat": "in use",
+     "interval": "5s"
+    },
+    {
+     "refId": "B",
+     "expr": "sum(medha_db_slots_waiting)",
+     "legendFormat": "queued",
+     "interval": "5s"
+    },
+    {
+     "refId": "C",
+     "expr": "sum(medha_db_slots_limit)",
+     "legendFormat": "limit",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 22,
+   "type": "timeseries",
+   "title": "503s from waiting too long",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 12,
+    "y": 43
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(rate(medha_db_slots_rejected_total[1m]))",
+     "legendFormat": "rejected/s",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 23,
+   "type": "timeseries",
+   "title": "Waiting for a connection, p95",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 18,
+    "y": 43
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "histogram_quantile(0.95, sum by (le) (rate(medha_db_pool_wait_seconds_bucket[1m])))",
+     "legendFormat": "p95",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 24,
+   "type": "timeseries",
+   "title": "Connection timeouts/s",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 0,
+    "y": 51
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(rate(medha_db_pool_timeouts_total[1m]))",
+     "legendFormat": "gave up after 30s",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 25,
+   "type": "timeseries",
+   "title": "Threads",
+   "description": "Sync routes run here. Queued and limit both high means requests are stuck behind threads.",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 6,
+    "y": 51
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(medha_threadpool_busy)",
+     "legendFormat": "busy",
+     "interval": "5s"
+    },
+    {
+     "refId": "B",
+     "expr": "sum(medha_threadpool_waiting)",
+     "legendFormat": "queued",
+     "interval": "5s"
+    },
+    {
+     "refId": "C",
+     "expr": "sum(medha_threadpool_capacity)",
+     "legendFormat": "limit",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 26,
+   "type": "timeseries",
+   "title": "Event loop blocked, by worker",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 12,
+    "y": 51
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "medha_event_loop_stalled_seconds",
+     "legendFormat": "pid {{pid}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 27,
+   "type": "timeseries",
+   "title": "Event loop lag, p99",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 18,
+    "y": 51
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "histogram_quantile(0.99, sum by (le) (rate(medha_event_loop_lag_seconds_bucket[1m])))",
+     "legendFormat": "p99",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 28,
+   "type": "timeseries",
+   "title": "CPU per worker",
+   "description": "1.0 is one full core. A worker at 1.0 cannot go faster, however many cores are free.",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 0,
+    "y": 59
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(medha_worker_cpu_seconds[1m])",
+     "legendFormat": "pid {{pid}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 29,
+   "type": "timeseries",
+   "title": "Memory per worker (peak)",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 6,
+    "y": 59
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "bytes",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "medha_worker_rss_bytes",
+     "legendFormat": "pid {{pid}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 30,
+   "type": "row",
+   "title": "Why it is slow: the database",
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 67
+   }
+  },
+  {
+   "id": 31,
+   "type": "timeseries",
+   "title": "Connections by state",
+   "description": "'idle in transaction' holds a connection while doing nothing, e.g. during an LLM call.",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 0,
+    "y": 68
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (state) (pg_stat_activity_count{datname=~\".*loadtest.*\"})",
+     "legendFormat": "{{state}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 32,
+   "type": "timeseries",
+   "title": "Transactions/s",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 6,
+    "y": 68
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(rate(pg_stat_database_xact_commit{datname=~\".*loadtest.*\"}[1m]))",
+     "legendFormat": "commits",
+     "interval": "5s"
+    },
+    {
+     "refId": "B",
+     "expr": "sum(rate(pg_stat_database_xact_rollback{datname=~\".*loadtest.*\"}[1m]))",
+     "legendFormat": "rollbacks",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 33,
+   "type": "timeseries",
+   "title": "Slowest statements by total time",
+   "description": "Seconds of database time per second. Full SQL is in the run's saved report.",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 12,
+    "y": 68
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(8, sum by (queryid) (rate(pg_stat_statements_seconds_total[1m])))",
+     "legendFormat": "{{queryid}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 34,
+   "type": "timeseries",
+   "title": "Locks and deadlocks",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 18,
+    "y": 68
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (mode) (pg_locks_count{mode=~\"exclusivelock|rowexclusivelock|accessexclusivelock\"})",
+     "legendFormat": "{{mode}}",
+     "interval": "5s"
+    },
+    {
+     "refId": "B",
+     "expr": "sum(rate(pg_stat_database_deadlocks{datname=~\".*loadtest.*\"}[1m]))",
+     "legendFormat": "deadlocks/s",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 35,
+   "type": "row",
+   "title": "The machines",
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 76
+   }
+  },
+  {
+   "id": 36,
+   "type": "timeseries",
+   "title": "CPU busy",
+   "description": "If the load generator stays high, the test itself is the limit and the result is not valid.",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 0,
+    "y": 77
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "1 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m]))",
+     "legendFormat": "{{instance}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 37,
+   "type": "timeseries",
+   "title": "Memory used",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 6,
+    "y": 77
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes",
+     "legendFormat": "{{instance}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 38,
+   "type": "timeseries",
+   "title": "Disk write latency",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 12,
+    "y": 77
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(node_disk_write_time_seconds_total{device=\"vda\"}[1m]) / rate(node_disk_writes_completed_total{device=\"vda\"}[1m])",
+     "legendFormat": "{{instance}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 39,
+   "type": "timeseries",
+   "title": "Network received",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 18,
+    "y": 77
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "Bps",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(node_network_receive_bytes_total{device=\"ens3\"}[1m])",
+     "legendFormat": "{{instance}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 40,
+   "type": "row",
+   "title": "Load generator",
+   "collapsed": false,
+   "gridPos": {
+    "h": 1,
+    "w": 24,
+    "x": 0,
+    "y": 85
+   }
+  },
+  {
+   "id": 41,
+   "type": "timeseries",
+   "title": "Failures/s as users see them",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 86
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(10, rate(locust_failures_total{name!=\"Aggregated\"}[1m]))",
+     "legendFormat": "{{name}}",
+     "interval": "5s"
+    }
+   ]
+  },
+  {
+   "id": 42,
+   "type": "timeseries",
+   "title": "p95 as users see it, slowest",
+   "description": "",
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 12,
+    "y": 86
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "ms",
+     "custom": {
+      "fillOpacity": 8,
+      "showPoints": "never",
+      "lineWidth": 1.5,
+      "spanNulls": true,
+      "stacking": {
+       "mode": "none"
+      }
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "table",
+     "placement": "right",
+     "calcs": [
+      "lastNotNull",
+      "max"
+     ]
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(10, locust_response_p95_ms{name!=\"Aggregated\"})",
+     "legendFormat": "{{name}}",
+     "interval": "5s"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,58 @@
+[
+ {
+  "name": "overhead-original-1",
+  "config": "small:1",
+  "original": true,
+  "env": {
+   "LT_SCENARIO": "polling",
+   "LT_SHAPE": "steady",
+   "LT_USERS": "20",
+   "LT_RUN_SECONDS": "100",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0.05"
+  },
+  "max_seconds": 200
+ },
+ {
+  "name": "overhead-metrics-1",
+  "config": "small:1",
+  "original": false,
+  "env": {
+   "LT_SCENARIO": "polling",
+   "LT_SHAPE": "steady",
+   "LT_USERS": "20",
+   "LT_RUN_SECONDS": "100",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0.05"
+  },
+  "max_seconds": 200
+ },
+ {
+  "name": "overhead-original-2",
+  "config": "small:1",
+  "original": true,
+  "env": {
+   "LT_SCENARIO": "polling",
+   "LT_SHAPE": "steady",
+   "LT_USERS": "20",
+   "LT_RUN_SECONDS": "100",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0.05"
+  },
+  "max_seconds": 200
+ },
+ {
+  "name": "overhead-metrics-2",
+  "config": "small:1",
+  "original": false,
+  "env": {
+   "LT_SCENARIO": "polling",
+   "LT_SHAPE": "steady",
+   "LT_USERS": "20",
+   "LT_RUN_SECONDS": "100",
+   "LT_THINK_MIN": "0",
+   "LT_THINK_MAX": "0.05"
+  },
+  "max_seconds": 200
+ }
+]

@@ -1,0 +1,188 @@
+[
+ {
+  "name": "ab1-small-1w-base",
+  "config": "small:1",
+  "max_seconds": 1740,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "200",
+   "LT_STEP_SECONDS": "180"
+  },
+  "code": "baseline"
+ },
+ {
+  "name": "ab1-small-1w-opt",
+  "config": "small:1",
+  "max_seconds": 1740,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "200",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "ab2-small-1w-opt",
+  "config": "small:1",
+  "max_seconds": 1740,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "200",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "ab2-small-1w-base",
+  "config": "small:1",
+  "max_seconds": 1740,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "200",
+   "LT_STEP_SECONDS": "180"
+  },
+  "code": "baseline"
+ },
+ {
+  "name": "ab1-small-2w-base",
+  "config": "small:2",
+  "max_seconds": 1920,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "80",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "240",
+   "LT_STEP_SECONDS": "180"
+  },
+  "code": "baseline"
+ },
+ {
+  "name": "ab1-small-2w-opt",
+  "config": "small:2",
+  "max_seconds": 1920,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "80",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "240",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "ab2-small-2w-opt",
+  "config": "small:2",
+  "max_seconds": 1920,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "80",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "240",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "ab2-small-2w-base",
+  "config": "small:2",
+  "max_seconds": 1920,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "80",
+   "LT_SCHOOLS_STEP": "20",
+   "LT_MAX_SCHOOLS": "240",
+   "LT_STEP_SECONDS": "180"
+  },
+  "code": "baseline"
+ },
+ {
+  "name": "ab1-default-4w-base",
+  "config": "default:4",
+  "max_seconds": 1920,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "300",
+   "LT_STEP_SECONDS": "180"
+  },
+  "code": "baseline"
+ },
+ {
+  "name": "ab1-default-4w-opt",
+  "config": "default:4",
+  "max_seconds": 1920,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "300",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "ab2-default-4w-opt",
+  "config": "default:4",
+  "max_seconds": 1920,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "300",
+   "LT_STEP_SECONDS": "180"
+  }
+ },
+ {
+  "name": "ab2-default-4w-base",
+  "config": "default:4",
+  "max_seconds": 1920,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "school",
+   "LT_PROFILE": "launch",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "100",
+   "LT_SCHOOLS_STEP": "25",
+   "LT_MAX_SCHOOLS": "300",
+   "LT_STEP_SECONDS": "180"
+  },
+  "code": "baseline"
+ }
+]

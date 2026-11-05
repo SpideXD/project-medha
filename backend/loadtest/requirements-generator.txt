@@ -1,0 +1,5 @@
+# Load generator and fake services, installed on their own boxes. Not part of the backend.
+locust==2.47.0
+prometheus-client>=0.21.0
+starlette>=0.40.0
+uvicorn[standard]>=0.30.0
