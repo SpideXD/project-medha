@@ -1,0 +1,52 @@
+[
+ {
+  "name": "oldcode-morning-small-2w",
+  "config": "small2:2",
+  "max_seconds": 2100,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "40",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false,
+  "code": "oldcode"
+ },
+ {
+  "name": "newcode-morning-small-2w",
+  "config": "small2:2",
+  "max_seconds": 2100,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "40",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false
+ },
+ {
+  "name": "oldcode2-morning-small-2w",
+  "config": "small2:2",
+  "max_seconds": 2100,
+  "env": {
+   "LT_SCENARIO": "day",
+   "LT_PHASE": "morning",
+   "LT_PROFILE": "full",
+   "LT_SHAPE": "steps",
+   "LT_SCHOOLS": "60",
+   "LT_SCHOOLS_STEP": "40",
+   "LT_MAX_SCHOOLS": "500",
+   "LT_STEP_SECONDS": "150"
+  },
+  "restore": false,
+  "code": "oldcode"
+ }
+]

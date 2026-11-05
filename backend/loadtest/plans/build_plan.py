@@ -248,6 +248,12 @@ def build_after_review() -> list[dict]:
     return plan
 
 
+def build_final_check() -> list[dict]:
+    """The exact code going in the PR. The 2 vCPU evening run before it is repeated here
+    because its load generator stalled, which made that run unreliable."""
+    return _on_far_boxes("final", ("small",), ("evening",)) + _on_far_boxes("final", ("default",), ("morning",))
+
+
 def build_capacity() -> list[dict]:
     """Push each server size until it breaks, on a database with far more data."""
     plan = []
@@ -274,6 +280,7 @@ if __name__ == "__main__":
     Path(__file__).with_name("before-fix.json").write_text(json.dumps(build_before_fix(), indent=1))
     Path(__file__).with_name("after-fix.json").write_text(json.dumps(build_after_fix(), indent=1))
     Path(__file__).with_name("after-review.json").write_text(json.dumps(build_after_review(), indent=1))
+    Path(__file__).with_name("final-check.json").write_text(json.dumps(build_final_check(), indent=1))
     out = Path(__file__).with_name("full.json")
     tests = build()
     out.write_text(json.dumps(tests, indent=1))
