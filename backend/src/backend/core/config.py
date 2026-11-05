@@ -26,6 +26,20 @@ class Settings(BaseSettings):
         "postgresql+psycopg2://shiksha:shiksha_dev_password@localhost:5431/shiksha_sathi"
     )
 
+    # Connection pool, per worker process. Total connections to Postgres can reach
+    # workers x (pool_size + max_overflow), so keep that under the database's limit.
+    db_pool_size: int = 5
+    db_max_overflow: int = 10
+    db_pool_timeout: int = 30
+    # Requests allowed to hold a database session at once, per process (see db/session.py).
+    # 0 means "just under the pool's capacity", which is what you normally want.
+    db_slots: int = 0
+    # How long a request queues for a slot before getting a 503.
+    db_slot_wait_seconds: float = 30.0
+
+    # Load-test metrics (core/metrics.py). Needs the `loadtest` dependency group.
+    metrics_enabled: bool = False
+
     # JWT (access tokens)
     jwt_secret_key: str
     jwt_algorithm: str = "HS256"
@@ -135,6 +149,8 @@ class Settings(BaseSettings):
 
     # Sarvam AI — speech (STT/TTS) for voice input and conversational mode
     sarvam_api_key: str = ""
+    # Overridable so a load test can point at a fake service instead of the paid API.
+    sarvam_base_url: str = "https://api.sarvam.ai"
     sarvam_stt_model: str = "saaras:v3"
     sarvam_tts_model: str = "bulbul:v3"
     sarvam_tts_speaker: str = "shubh"

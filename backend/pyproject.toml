@@ -35,6 +35,12 @@ dependencies = [
     "voyageai>=0.3.0",
 ]
 
+[dependency-groups]
+# Only for load testing. Not a default group, so `uv sync --frozen` (Render's build) skips it.
+loadtest = [
+    "prometheus-client>=0.21.0",
+]
+
 [project.scripts]
 backend = "backend:main"
 
